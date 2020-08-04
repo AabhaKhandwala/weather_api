@@ -1,12 +1,19 @@
-<!DOCTYPE html>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Weather App</title>
+    <!-- <link rel="stylesheet" th:href="@{/custom.css}"/> -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .container{
+            background-image: url("https://images.unsplash.com/photo-1467226632440-65f0b4957563?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60");
+            background-size: cover;
+        }
+    </style>
 </head>
-<body>
+<body >
 ​
     <div class="container bg-light justify-content-center">
         <div class="row">
@@ -35,16 +42,12 @@
                 <p><b>Cloud Cover:</b> <span th:text="${data.clouds.get('all')}"></span> %</p>
                 <p><b>Wind:</b> <span th:text="${data.wind.get('speed')}"></span> mph</p>
                 <p><b>Conditions:</b> <span th:text="${data.weather[0].get('description')}"></span>
-​
-​
+                     <p><b>Conditions:</b> <span th:text="${data.weather[0].get('main')}"></span> 
 ​
 ​
                 <img th:src="@{${'http://openweathermap.org/img/w/' + data.weather[0].get('icon') + '.png'}}"></p>
 ​
                 </div>
-​
-​
-​
 ​
         </div>
 ​
@@ -70,34 +73,52 @@
             </div>
 ​
         </div>
-        <script>
-            let cloudyBackground = document.querySelector('body');
-                cloudyBackground.style.background = "url(image/cloudy.jpg)";
-            let rainyBackground = document.querySelector('body');
-                rainyBackground.style.background = "url(image/rainy.jpg)";
-            let snowyBackground = document.querySelector('body');
-                snowyBackground.style.background = "url(image/snowy.jpg)";
-            let sunnyBackground = document.querySelector('body');
-                sunnyBackground.style.background = "url(image/sunny.jpg)";
+         <script th:inline="javascript">                 
+            /*<![CDATA[*/
 
-            let imageBackground = ['clouds', 'rain', 'snow', 'sunny'];
-            for (let i = 0; i > imageBackground.length; i++) {
-            switch (weather_el.value) {
-            case 'clouds':
-            cloudyBackground;
+
+
+
+            var weathercase;
+            
+            var weathermain = /* [[${data.weather[0].main}]]*/null;       
+
+            if(weathermain.toLowerCase().includes("clouds")){
+                weathercase = 0;
+            }else if(weathermain.toLowerCase().includes("rain")){
+                weathercase = 1;
+            }else if(weathermain.toLowerCase().includes("snow")){
+                weathercase = 2;
+            }else if(weathermain.toLowerCase().includes("clear")) {
+                weathercase = 3;
+            }      
+             
+            alert(weathermain);          
+           alert(weathercase);
+           // let weather = weathermain.includes("Cloudes");
+            // let weather = 'clouds';
+            //console.log(weathermain);
+            //console.log(weather);
+            
+            switch (weathercase) {
+            case 0:
+            let cloudyBackground = document.querySelector('body');
+                cloudyBackground.style.backgroundImage = "url('../images/cloudy.jpg')";
+                break;
+            case 1:
+            let rainyBackground = document.querySelector('body');
+                rainyBackground.style.backgroundImage = "url('../images/rainy.jpg')";
             break;
-            case 'rain':
-            rainyBackground;
-            break;
-            case 'snow':
-            snowyBackground;
-            break;
-            case 'sunny':
-            sunnyBackground;
+            // case 2:
+            // snowyBackground;
+            // break;
+            case 3:
+            let sunnyBackground = document.querySelector('body');
+                sunnyBackground.style.backgroundImage = "url('../images/sunny.jpg')";
             break;
         }
-}
-        </script>
+/*]]>*/
+        </script> 
 </body>
 </html>
 
